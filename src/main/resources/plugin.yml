@@ -1,0 +1,11 @@
+name: woLobbyPvp
+version: '1.0'
+main: pl.wojteko.woLobbyPvp.WoLobbyPvp
+api-version: '1.18'
+prefix: WoLobbyPvp
+authors: [ wojteko ]
+description: Pierwszy plugin wojteko
+commands:
+  wolobbypvp:
+    description: Przeladowuje config
+    permission: wolobbypvp.admin
