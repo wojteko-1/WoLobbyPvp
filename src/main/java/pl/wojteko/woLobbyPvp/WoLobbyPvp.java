@@ -29,7 +29,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.wojteko.woLobbyPvp.compat.VersionManager;
-import pl.wojteko.woLobbyPvp.Metrics;
 
 import java.util.*;
 
@@ -65,7 +64,7 @@ public class WoLobbyPvp extends JavaPlugin implements Listener, CommandExecutor 
         getCommand("wolobbypvp").setExecutor(this);
 
         // Integracja bStats
-        int pluginId = 29783;
+        int pluginId = 29785;
         Metrics metrics = new Metrics(this, pluginId);
         metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
 
