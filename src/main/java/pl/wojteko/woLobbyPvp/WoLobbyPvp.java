@@ -29,6 +29,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import pl.wojteko.woLobbyPvp.compat.VersionManager;
+import pl.wojteko.woLobbyPvp.Metrics;
 
 import java.util.*;
 
@@ -43,6 +44,7 @@ public class WoLobbyPvp extends JavaPlugin implements Listener, CommandExecutor 
         VersionManager.init();
         saveDefaultConfig();
 
+        // Informacje o wersji w konsoli
         String pluginVersion = getDescription().getVersion();
         String serverVersion = VersionManager.getVersion();
         String author = String.join(", ", getDescription().getAuthors());
@@ -58,9 +60,16 @@ public class WoLobbyPvp extends JavaPlugin implements Listener, CommandExecutor 
         }
         getLogger().info("========================================");
 
+        // Rejestracja eventów i komend
         getServer().getPluginManager().registerEvents(this, this);
         getCommand("wolobbypvp").setExecutor(this);
 
+        // Integracja bStats
+        int pluginId = 29783;
+        Metrics metrics = new Metrics(this, pluginId);
+        metrics.addCustomChart(new Metrics.SimplePie("chart_id", () -> "My value"));
+
+        // Inicjalizacja graczy online
         for(Player p : Bukkit.getOnlinePlayers()) {
             applyLobbyEffects(p);
             giveActivatorItem(p);
@@ -108,7 +117,11 @@ public class WoLobbyPvp extends JavaPlugin implements Listener, CommandExecutor 
     private boolean isPvPItem(ItemStack item) {
         if (item == null || item.getType() == Material.AIR) return false;
         String materialName = getConfig().getString("activator-item.material", "WOODEN_SWORD");
-        if (item.getType() != Material.valueOf(materialName)) return false;
+        try {
+            if (item.getType() != Material.valueOf(materialName)) return false;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
 
         ItemMeta meta = item.getItemMeta();
         if (meta == null || !meta.hasDisplayName()) return false;
@@ -153,12 +166,14 @@ public class WoLobbyPvp extends JavaPlugin implements Listener, CommandExecutor 
     }
 
     private ItemStack createItem(String path) {
-        Material mat = Material.valueOf(getConfig().getString(path + ".material", "STONE"));
+        String matName = getConfig().getString(path + ".material", "STONE");
+        Material mat = Material.matchMaterial(matName);
+        if (mat == null) mat = Material.STONE;
+
         ItemStack item = new ItemStack(mat);
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', getConfig().getString(path + ".name", "")));
-            // BLOKADA ZUŻYWANIA (META)
             meta.setUnbreakable(true);
             item.setItemMeta(meta);
         }
@@ -167,7 +182,6 @@ public class WoLobbyPvp extends JavaPlugin implements Listener, CommandExecutor 
 
     // --- LISTENERY ---
 
-    // BLOKADA ZUŻYWANIA (EVENT GLOBALNY)
     @EventHandler
     public void onItemDamage(PlayerItemDamageEvent e) {
         e.setCancelled(true);

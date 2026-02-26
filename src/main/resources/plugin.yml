@@ -5,6 +5,7 @@ api-version: '1.18'
 prefix: WoLobbyPvp
 authors: [ wojteko ]
 description: Pierwszy plugin wojteko
+website: https://modrinth.com/plugin/wolobbypvp
 commands:
   wolobbypvp:
     description: Przeladowuje config
