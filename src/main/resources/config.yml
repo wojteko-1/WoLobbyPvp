@@ -1,0 +1,54 @@
+# ==========================================
+#        woLobbyPvp - Konfiguracja
+# ==========================================
+
+# Czas oczekiwania (w sekundach) od momentu wzięcia miecza do ręki do pełnej aktywacji PvP.
+# Kod używa tej wartości w metodzie onSlotChange do uruchomienia odliczania.
+warmup-seconds: 3
+
+# Przedmiot, który gracz otrzyma automatycznie po wejściu na serwer.
+# Musi trzymać go w ręce, aby aktywować tryb walki.
+activator-item:
+  # Slot w pasku szybkiego wyboru (1-9), na który gracz otrzyma miecz.
+  slot: 1
+  # Materiał przedmiotu (używaj nazw z dokumentacji Spigota, np. DIAMOND_SWORD).
+  material: WOODEN_SWORD
+  # Nazwa wyświetlana (obsługuje kolory &). Sprawdzana w metodzie isPvPItem.
+  name: "&c&lMiecz Wyzwania"
+  # Opis przedmiotu - dodaje klimatu i informuje gracza o zasadach.
+  lore:
+    - "&7Status: &eLobby PvP"
+    - ""
+    - "&fTrzymaj ten miecz, aby walczyć!"
+    - "&fKliknij &6LPM&f, aby ubrać zbroję."
+    - ""
+    - "&7Uwaga: Schowanie miecza wyłącza tryb PvP."
+
+# Zestaw zbroi, który pojawia się na graczu po kliknięciu Lewym Przyciskiem Myszy (LPM).
+# Przedmioty te są tworzone dynamicznie przez funkcję createItem w kodzie.
+armor:
+  helmet:
+    material: IRON_HELMET
+    name: "&cHełm"
+  chestplate:
+    material: IRON_CHESTPLATE
+    name: "&cKlata"
+  leggings:
+    material: IRON_LEGGINGS
+    name: "&cSpodnie"
+  boots:
+    material: IRON_BOOTS
+    name: "&cButy"
+
+# Wszystkie napisy i komunikaty, które widzi gracz podczas korzystania z pluginu.
+messages:
+  # Wyświetlane jako Title i na czacie w momencie zakończenia odliczania.
+  pvp-enabled: "&a&lWALKA! &7Tryb PvP został aktywowany."
+  # Informacja po schowaniu miecza lub wyjściu z serwera.
+  pvp-disabled: "&c&lKONIEC! &7Tryb PvP został wyłączony."
+  # Główny napis Title podczas odliczania.
+  warmup-title: "&ePrzygotuj się..."
+  # Podnapis Title - %seconds% jest automatycznie zamieniane na czas pozostały w kodzie.
+  warmup-subtitle: "&7Walka zacznie się za: &c%seconds%s"
+  # Komunikat po kliknięciu LPM, gdy zbroja wskoczy na swoje miejsce.
+  armor-equipped: "&a&oTwoja zbroja została założona!"
